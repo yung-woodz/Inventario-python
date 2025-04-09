@@ -1,3 +1,6 @@
+import os
+from crud import create
+
 class Admin:
     def __init__(self, nombre, apellidos, username, password):
         self.nombre = nombre
@@ -33,7 +36,7 @@ class Users:
         self.password = password
 
         with open('Users.txt', 'a') as fichero:
-            fichero.write(f"{self.nombre} {self.apellidos} {self.username} {self.password}")
+            fichero.write(f"{self.nombre} {self.apellidos} {self.username} {self.password}\n")
 
     @staticmethod
     def verificarLogin(username, password):
@@ -51,6 +54,25 @@ class Users:
                         return True
                     
             return False
+
+
+def menu():
+
+    op = int()
+    
+    while not (1 <= op <= 4):
+        os.system('clear')
+        print("Bienvendido al Sistema!!")
+        print("\tElige una opcion\n")
+        print("1. Agregar\n"
+              "2. Leer\n"
+              "3. Actualizar\n"
+              "4. Eliminar\n")
+    
+        op = int(input("Opcion: "))
+
+    if op == 1:
+        create.main()
 
 
 def main():
@@ -72,12 +94,13 @@ def main():
     login_password = input("Contraseña: ")
 
     if Users.verificarLogin(login_username, login_password):
-        print("Login iniciado")
+        print("Login iniciado\n")
+        menu()
     else:
         print("Datos incorrectos")
 
 
+    
+
 if __name__ == "__main__":
     main()
-
-
