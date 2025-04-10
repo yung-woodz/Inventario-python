@@ -45,7 +45,7 @@ def mostrar_producto(nombre_buscar=None, tipo_buscar=None):
                 # Mostrar solo el tipo específico
                 cantidad = productos[nombre_buscar][tipo_buscar]
                 if cantidad > 0:
-                    print(f"\t{tipo_buscar}: {cantidad} unidades")
+                    print(f"{tipo_buscar}: {cantidad} unidades")
                 return cantidad
             else:
                 # Mostrar todos los tipos del producto

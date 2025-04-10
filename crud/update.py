@@ -79,11 +79,14 @@ def main():
         print("Opcion no valida")
         return
     
-    read.main()
-    
     # Mostrar solo el producto seleccionado
+    print("\nInformación del producto seleccionado:")
     cantidad_actual = read.mostrar_producto(nombre, tipo)
     
+    if cantidad_actual is None:
+        print("Error: Producto no encontrado")
+        return
+        
     cantidad_nueva = int(input("\nIngrese la cantidad a agregar: "))
     
     if actualizar_producto(nombre, tipo, cantidad_nueva):
