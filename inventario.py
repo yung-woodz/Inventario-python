@@ -1,5 +1,5 @@
 import os
-from crud import create
+from crud import create, read, update, delete
 
 class Admin:
     def __init__(self, nombre, apellidos, username, password):
@@ -73,6 +73,12 @@ def menu():
 
     if op == 1:
         create.main()
+    elif op == 2:
+        read.main()
+    elif op == 3:
+        update.main()
+    elif op == 4:
+        delete.main()
 
 
 def main():

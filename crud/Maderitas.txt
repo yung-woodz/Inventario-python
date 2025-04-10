@@ -1,3 +1,8 @@
-Peon Macho 1
-Peon Hembra 4
+Peon Macho 3
+Peon Hembra 5
 Lomo Toro Hembra 5
+Calabera Hembra 1
+Calabera Macho 2
+Peon Macho 3
+Calabera Hembra 1
+Lomo Toro Macho 4
