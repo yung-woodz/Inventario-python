@@ -103,10 +103,7 @@ def main():
         print("Login iniciado\n")
         menu()
     else:
-        print("Datos incorrectos")
-
-
-    
+        print("Datos incorrectos")    
 
 if __name__ == "__main__":
     main()
