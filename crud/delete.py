@@ -1,4 +1,5 @@
 import os
+from auth import Admin as ad2
 
 class Maderitas:
     def __init__(self, nombre, tipo, cantidad):
@@ -92,20 +93,30 @@ def main():
         return
     
     print("Ingresa la cantidad de piezas a eliminar")
-    try:
-        cantidad = int(input("Cantidad: "))
-        if cantidad <= 0:
-            print("La cantidad debe ser mayor a 0!")
-            return
+
+    cantidad = int(input("Cantidad: "))
+
+    if not str(cantidad).isdigit():
+        print("Por favor ingrese un número válido para la cantidad")
+
+    if cantidad <= 0:
+        print("La cantidad debe ser mayor a 0!")
+        
+    print("\nSe requiere permiso de administrador\n")
+    username = input("Username: ")
+    password = input("Contraseña: ")
+
+    if ad2.verificarLogin(username, password):
             
         # Crear instancia y ejecutar eliminación
         maderitas = Maderitas(nombre, tipo, 0)  # cantidad 0 porque solo vamos a eliminar
         if maderitas.eliminar(nombre, tipo, cantidad):
             print(f"Se eliminaron {cantidad} piezas de {nombre} tipo {tipo}")
+                
+    else:
+        print("Administrador no autenticado")
         
-    except ValueError:
-        print("Por favor ingrese un número válido para la cantidad")
-        return
+    
 
 if __name__ == "__main__":
     main()

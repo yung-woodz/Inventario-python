@@ -1,4 +1,5 @@
 import os
+from auth import Admin as ad1
 from crud import read
 
 def obtener_cantidad_actual(nombre, tipo):
@@ -88,12 +89,20 @@ def main():
         return
         
     cantidad_nueva = int(input("\nIngrese la cantidad a agregar: "))
+
+    print("\nSe requiere permiso de administrador\n")
+    username = input("Username: ")
+    password = input("Contraseña: ")
+
+    if ad1.verificarLogin(username, password):
     
-    if actualizar_producto(nombre, tipo, cantidad_nueva):
-        print(f"\nProducto actualizado exitosamente!")
-        print(f"Nueva cantidad total: {cantidad_actual + cantidad_nueva}")
+        if actualizar_producto(nombre, tipo, cantidad_nueva):
+            print(f"\nProducto actualizado exitosamente!")
+            print(f"Nueva cantidad total: {cantidad_actual + cantidad_nueva}")
+        else:
+            print("Error: Producto no encontrado")
     else:
-        print("Error: Producto no encontrado")
+        print("Administrador no autenticado")
 
 if __name__ == "__main__":
     main()
