@@ -2,24 +2,6 @@ import os
 from auth import Admin as ad1
 from crud import read
 
-def obtener_cantidad_actual(nombre, tipo):
-    carpeta_crud = "crud"
-    ruta_archivo = os.path.join(carpeta_crud, 'Maderitas.txt')
-    
-    with open(ruta_archivo, 'r') as fichero:
-        for linea in fichero:
-            partes = linea.strip().split()
-            if len(partes) < 3:
-                continue
-            
-            nombre_archivo = " ".join(partes[:-2])  # Une palabras del nombre
-            tipo_archivo = partes[-2]
-            cantidad_archivo = int(partes[-1])
-            
-            if nombre_archivo == nombre and tipo_archivo == tipo:
-                return cantidad_archivo
-    return 0
-
 def actualizar_producto(nombre, tipo, cantidad_nueva):
     carpeta_crud = "crud"
     ruta_archivo = os.path.join(carpeta_crud, 'Maderitas.txt')
