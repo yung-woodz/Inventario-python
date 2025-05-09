@@ -37,7 +37,7 @@ botonLeer.grid(row=1,column=0,padx=5,pady=5)
 botonActualizar.grid(row=1,column=1,padx=5,pady=5)
 botonAgregar.grid(row=1,column=2,padx=5,pady=5)
 botonEliminar.grid(row=1,column=3,padx=5,pady=5)
-on_off_main(False)
+on_off_main(True)
 
 ##---------------Inicio------------##
 new_register_win = Toplevel(ventana)
@@ -120,22 +120,66 @@ def new_user():
     confirmar.grid(row=1,column=2,padx=5,pady=5)
     
 ####---------------------GUIA2-----------------####
+from crud.create import Maderitas
+
 def create_gui():
     on_off_main(False)
     create_win = Toplevel(ventana)
     create_win.transient(ventana)
     create_win.title('registro de usuario')
+
     
-    var = IntVar()
-    W = Radiobutton(create_win)
-    #Textos
-    texto=Label(create_win,text='Escoge el tipo de pieza, además de si es macho u hembra')
-    texto.grid(row=0,column=0,padx=5,pady=5)
-    #botones
-    r1 = Radiobutton(create_win,text='Peón',variable=var,value=1)
-    r1.pack(anchor=CENTER)
-    r2 = Radiobutton(create_win,text='Calabera',variable=var,value=2)
-    r2.pack(anchor=CENTER)
+    var = StringVar(value='None')
+    var_2=StringVar(value='None')
+
+    #Tipo de pieza
+    texto=Label(create_win,text='Escoge el tipo de pieza')
+    texto.pack(anchor='center')
+
+    peon_button = Radiobutton(create_win,text='Peón',variable=var,value='Peón').\
+        pack(anchor='center')
+    calabera_button = Radiobutton(create_win,text='Calabera',variable=var,value='Calabera').\
+        pack(anchor='center')
+    lomo_button = Radiobutton(create_win,text='Lomo Toro',variable=var,value='Lomo Toro').\
+        pack(anchor='center')
+    #Macho Hembra
+    texto_2=Label(create_win,text='Escoge si es macho o hembra')
+    texto_2.pack(anchor='center')
+
+    macho_button = Radiobutton(create_win,text='Macho',variable=var_2,value='Macho').\
+        pack(anchor='center')
+    hembra_button = Radiobutton(create_win,text='Hembra',variable=var_2,value='Hembra').\
+        pack(anchor='center')
+    
+    #Cantidad
+    texto_3=Label(create_win,text='Ingresa una cantidad')
+    texto_3.pack(anchor='center')
+
+    cantidad = Entry(create_win)
+    cantidad.pack(anchor='center')
+    #Confirmación
+    confirmar = Button(create_win,text='Confirmar',\
+        width=8,height=1,command=lambda:[create_piece(var.get(),var_2.get(),cantidad.get()),create_win.destroy()]).pack(side='left')
+    cancelar = Button(create_win,text='Cancelar',\
+        width=8,height=1,command=lambda:[on_off_main(True),create_win.destroy()]).pack(side='right')
+    
+    #Función
+    def create_piece(nombre,tipo,cantidad):
+        if cantidad =='':
+            messagebox.showerror(message='Faltan datos')
+            return None
+        cantidad = int(cantidad)
+        if cantidad <= 0:
+            messagebox.showerror(message='¡El valor debe ser mayor que 0!')
+            return None
+        else:
+            Maderitas(nombre,tipo,cantidad)
+            messagebox.showinfo(message='¡Creado exitosamente!')
+
     create.main()
+
+####---------------------GUIA2-----------------####
+from crud.read import *
+
 
 ventana.mainloop()
