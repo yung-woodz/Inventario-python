@@ -8,8 +8,8 @@ ventana = Tk()
 ventana.title("Inventario")
 ventana.resizable(0,0)
 
-def on_off_main(state):
-    if state:
+def on_off_main(switch:bool):
+    if switch:
         botonActualizar.configure(state=NORMAL)
         botonAgregar.configure(state=NORMAL)
         botonEliminar.configure(state=NORMAL)
@@ -19,19 +19,18 @@ def on_off_main(state):
         botonEliminar.configure(state=DISABLED)
 
 ###---------------ventanas------------###
-
 ##----------Ventana principal----------##
 #botones
 botonAgregar = Button(ventana,text='Agregar',\
-    width=8, height=1,command=lambda:create_gui())
+    width=8, height=1,command=lambda:extra_gui(0))
 botonActualizar = Button(ventana,text='Actualizar',\
-    width=8, height=1,command=lambda:update.main())
+    width=8, height=1,command=lambda:extra_gui(1))
 botonEliminar = Button(ventana,text='Eliminar',\
-    width=8, height=1,command=lambda:delete.main())
+    width=8, height=1,command=lambda:extra_gui(2))
 botonActualizar.grid(row=1,column=0,padx=5,pady=5)
 botonAgregar.grid(row=1,column=1,padx=5,pady=5)
 botonEliminar.grid(row=1,column=2,padx=5,pady=5)
-on_off_main(True)
+on_off_main(False)
 
 ##---------------Inicio------------##
 new_register_win = Toplevel(ventana)
@@ -45,13 +44,12 @@ registro_texto.grid(row=0,column=0,padx=5,pady=5)
 confirmar=Button(new_register_win,text='Confirmar',\
     width=8,height=1,command=lambda:new_user())
 cancelar=Button(new_register_win,text='Cancelar',\
-    width=8,height=1,command=lambda:login())
+    width=8,height=1,command=lambda:[new_register_win.destroy(),login()])
 confirmar.grid(row=1,column=0,padx=5,pady=5)
 cancelar.grid(row=1,column=2,padx=5,pady=5)
 
 ##------------------Login-----------##
 def login():
-    new_register_win.destroy()
     login_win = Toplevel(ventana)
     login_win.transient(ventana)
     login_win.title('inicio de sesión')
@@ -70,13 +68,16 @@ def login():
     confirmar = Button(login_win,text='Confirmar',\
         width=8,height=1,command=lambda:login_ver())
     confirmar.grid(row=1,column=2,padx=5,pady=5)
+
     def login_ver():
         if Users.verificarLogin(usuario.get(),contrasena.get()):
             messagebox.showinfo(title=None,message='Inicio de sesión exitoso')
             on_off_main(True)
             login_win.destroy()
+            return True
         else:
             messagebox.showerror(title=None,message='Datos incorrectos')
+            return False
   
   
 ##-----Registro-----##
@@ -115,74 +116,150 @@ def new_user():
     
 ####---------------------GUIA2-----------------####
 from crud.create import Maderitas
-
-def create_gui():
+def extra_gui(fun):
     on_off_main(False)
-    create_win = Toplevel(ventana)
-    create_win.transient(ventana)
-    create_win.title('Creación de piezas')
+    extra_win = Toplevel(ventana)
+    extra_win.transient(ventana)
+    extra_win.title('Creación de piezas')
 
     
     var = StringVar(value='None')
     var_2=StringVar(value='None')
 
     #Tipo de pieza
-    texto=Label(create_win,text='Escoge el tipo de pieza')
+    texto=Label(extra_win,text='Escoge el tipo de pieza')
     texto.pack(anchor='center')
 
-    peon_button = Radiobutton(create_win,text='Peón',variable=var,value='Peón').\
+    peon_button = Radiobutton(extra_win,text='Peón',variable=var,value='Peon').\
         pack(anchor='center')
-    calabera_button = Radiobutton(create_win,text='Calabera',variable=var,value='Calabera').\
+    calabera_button = Radiobutton(extra_win,text='Calabera',variable=var,value='Calabera').\
         pack(anchor='center')
-    lomo_button = Radiobutton(create_win,text='Lomo Toro',variable=var,value='Lomo Toro').\
+    lomo_button = Radiobutton(extra_win,text='Lomo Toro',variable=var,value='Lomo Toro').\
         pack(anchor='center')
     #Macho Hembra
-    texto_2=Label(create_win,text='Escoge si es macho o hembra')
+    texto_2=Label(extra_win,text='Escoge si es macho o hembra')
     texto_2.pack(anchor='center')
 
-    macho_button = Radiobutton(create_win,text='Macho',variable=var_2,value='Macho').\
+    macho_button = Radiobutton(extra_win,text='Macho',variable=var_2,value='Macho').\
         pack(anchor='center')
-    hembra_button = Radiobutton(create_win,text='Hembra',variable=var_2,value='Hembra').\
+    hembra_button = Radiobutton(extra_win,text='Hembra',variable=var_2,value='Hembra').\
         pack(anchor='center')
     
     #Cantidad
-    texto_3=Label(create_win,text='Ingresa una cantidad')
+    texto_3=Label(extra_win,text='Ingresa una cantidad')
     texto_3.pack(anchor='center')
 
-    cantidad = Entry(create_win)
+    cantidad = Entry(extra_win)
     cantidad.pack(anchor='center')
     #Confirmación
-    confirmar = Button(create_win,text='Confirmar',\
-        width=8,height=1,command=lambda:[create_piece(var.get(),var_2.get(),cantidad.get()),create_win.destroy()]).pack(side='left')
-    cancelar = Button(create_win,text='Cancelar',\
-        width=8,height=1,command=lambda:[on_off_main(True),create_win.destroy()]).pack(side='right')
-    
-    #Función
-    def create_piece(nombre,tipo,cantidad):
-        if cantidad =='':
-            messagebox.showerror(message='Faltan datos')
-            return None
-        cantidad = int(cantidad)
-        if cantidad <= 0:
-            messagebox.showerror(message='¡El valor debe ser mayor que 0!')
-            return None
-        else:
-            Maderitas(nombre,tipo,cantidad)
-            messagebox.showinfo(message='¡Creado exitosamente!')
+    match fun:
+        case 0:
+            confirmar = Button(extra_win,text='Confirmar',\
+                width=8,height=1,command=lambda:[create_piece(var.get(),var_2.get(),cantidad.get()),extra_win.destroy()]).pack(side='left')
+            cancelar = Button(extra_win,text='Cancelar',\
+                width=8,height=1,command=lambda:[on_off_main(True),extra_win.destroy()]).pack(side='right')
+        case 1:
+            confirmar = Button(extra_win,text='Confirmar',\
+                width=8,height=1,command=lambda:[create_piece(var.get(),var_2.get(),cantidad.get()),extra_win.destroy()]).pack(side='left')
+            cancelar = Button(extra_win,text='Cancelar',\
+                width=8,height=1,command=lambda:[on_off_main(True),extra_win.destroy()]).pack(side='right')
+        case 2:
+            confirmar = Button(extra_win,text='Confirmar',\
+                width=8,height=1,command=lambda:[del_piece(var.get(),var_2.get(),cantidad.get()),extra_win.destroy()]).pack(side='left')
+            cancelar = Button(extra_win,text='Cancelar',\
+                width=8,height=1,command=lambda:[on_off_main(True),extra_win.destroy()]).pack(side='right')
+            
+def create_piece(nombre,tipo,cantidad): 
+    if cantidad =='':
+        messagebox.showerror(message='Faltan datos')
+        return None
+    cantidad = int(cantidad)
+    if cantidad <= 0:
+        messagebox.showerror(message='¡El valor debe ser mayor que 0!')
+        return None
+    else:
+        Maderitas(nombre,tipo,cantidad)
+        messagebox.showinfo(message='¡Creado exitosamente!')
+        on_off_main(True)
+        table_update()
 
-    create.main()
+####---------------------GUIA3-----------------####
+from crud.read import *
+def table_update():
+    carpeta_crud = "crud"
+    ruta_archivo = os.path.join(carpeta_crud, 'Maderitas.txt')
 
-####---------------------GUIA2-----------------####
-from crud.read import productos
-def update_table(prodctos):
-    for i in range(6):
-        for j in range(3):
+    if not os.path.exists(carpeta_crud):
+        print(f"Error: La carpeta {carpeta_crud} no existe")
+        
+    if not os.path.exists(ruta_archivo):
+        print(f"Error: El archivo {ruta_archivo} no existe")
+
+    productos = {}
+
+    try:
+        with open(ruta_archivo, 'r') as fichero:
+            for numero_linea, linea in enumerate(fichero, 1):
+                try:
+                    partes = linea.strip().split()
+                    nombre, tipo, cantidad = procesar_linea(partes)
+                    
+                    if nombre is None:
+                        print(f"Error en línea {numero_linea}: formato inválido")
+                        continue
+                    
+                    # Inicializar producto si no existe
+                    if nombre not in productos:
+                        productos[nombre] = {"Macho": 0, "Hembra": 0}
+                        
+                    if tipo in ["Macho", "Hembra"]:
+                        productos[nombre][tipo] += int(cantidad)
+                    
+                except ValueError:
+                    print(f"Error en línea {numero_linea}: no se puede procesar")
+                    continue
+
+    except FileNotFoundError:
+        print("Error: No se puede abrir el archivo")
+
+    # Mostrar resultados
+    columns_table = [[],[],[]]
+    for nombre, tipos in productos.items():
+        columns_table[0].append(nombre)
+        columns_table[0].append(nombre)
+        for tipo, cantidad in tipos.items():
+            columns_table[1].append(tipo)
+            columns_table[2].append(cantidad)
+
+    for i in range(0,6):
+        for j in range(0,3):
             e = Entry(ventana, width=10, font=('Arial', 16, 'bold'))
             e.grid(row=i+2, column=j)
-            e.insert(END, productos[i][j])
+            e.insert(END,columns_table[j][i])
 
-update_table()
+table_update()
 
+####---------------------GUIA4-----------------####
+# def edit_table(nombre,tipo,cantidad):
+#     if login():
+
+#         return
+#     else:
+#         return
+# extra_gui(0)
+def del_piece(nombre,tipo,cantidad): 
+    if cantidad =='':
+        messagebox.showerror(message='Faltan datos')
+        return None
+    cantidad = int(cantidad)
+    if cantidad >= 0:
+        messagebox.showerror(message='¡El valor debe ser menor que 0!')
+        return None
+    else:
+        Maderitas(nombre,tipo,cantidad)
+        messagebox.showinfo(message='¡Borrado exitosamente!')
+        on_off_main(True)
+        table_update()
 
 
 
