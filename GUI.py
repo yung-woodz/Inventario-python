@@ -6,17 +6,14 @@ from auth import Users
 
 ventana = Tk()
 ventana.title("Inventario")
-ventana.geometry("450x100")
 ventana.resizable(0,0)
 
 def on_off_main(state):
     if state:
-        botonLeer.configure(state=NORMAL)
         botonActualizar.configure(state=NORMAL)
         botonAgregar.configure(state=NORMAL)
         botonEliminar.configure(state=NORMAL)
     else:
-        botonLeer.configure(state=DISABLED)
         botonActualizar.configure(state=DISABLED)
         botonAgregar.configure(state=DISABLED)
         botonEliminar.configure(state=DISABLED)
@@ -27,16 +24,13 @@ def on_off_main(state):
 #botones
 botonAgregar = Button(ventana,text='Agregar',\
     width=8, height=1,command=lambda:create_gui())
-botonLeer = Button(ventana,text='Leer',\
-    width=8, height=1,command=lambda:read.main())
 botonActualizar = Button(ventana,text='Actualizar',\
     width=8, height=1,command=lambda:update.main())
 botonEliminar = Button(ventana,text='Eliminar',\
     width=8, height=1,command=lambda:delete.main())
-botonLeer.grid(row=1,column=0,padx=5,pady=5)
-botonActualizar.grid(row=1,column=1,padx=5,pady=5)
-botonAgregar.grid(row=1,column=2,padx=5,pady=5)
-botonEliminar.grid(row=1,column=3,padx=5,pady=5)
+botonActualizar.grid(row=1,column=0,padx=5,pady=5)
+botonAgregar.grid(row=1,column=1,padx=5,pady=5)
+botonEliminar.grid(row=1,column=2,padx=5,pady=5)
 on_off_main(True)
 
 ##---------------Inicio------------##
@@ -126,7 +120,7 @@ def create_gui():
     on_off_main(False)
     create_win = Toplevel(ventana)
     create_win.transient(ventana)
-    create_win.title('registro de usuario')
+    create_win.title('Creación de piezas')
 
     
     var = StringVar(value='None')
@@ -179,7 +173,17 @@ def create_gui():
     create.main()
 
 ####---------------------GUIA2-----------------####
-from crud.read import *
+from crud.read import productos
+def update_table(prodctos):
+    for i in range(6):
+        for j in range(3):
+            e = Entry(ventana, width=10, font=('Arial', 16, 'bold'))
+            e.grid(row=i+2, column=j)
+            e.insert(END, productos[i][j])
+
+update_table()
+
+
 
 
 ventana.mainloop()
