@@ -32,21 +32,24 @@ def actualizar_producto(nombre, tipo, cantidad_nueva):
     return producto_encontrado
 
 def main():
+    # print("Que producto desea actualizar?\n")
+    # print("1. Peon\n"
+    #       "2. Calabera\n"
+    #       "3. Lomo Toro\n")
+    # op1 = int(input("Opcion: "))
+
     print("Que producto desea actualizar?\n")
-    print("1. Peon\n"
-          "2. Calabera\n"
-          "3. Lomo Toro\n")
-    op1 = int(input("Opcion: "))
+    nombre = str(input("Nombre: ").strip())
     
-    if op1 == 1:
-        nombre = "Peon"
-    elif op1 == 2:
-        nombre = "Calabera"
-    elif op1 == 3:
-        nombre = "Lomo Toro"
-    else:
-        print("Opcion no valida")
-        return
+    # if op1 == 1:
+    #     nombre = "Peon"
+    # elif op1 == 2:
+    #     nombre = "Calabera"
+    # elif op1 == 3:
+    #     nombre = "Lomo Toro"
+    # else:
+    #     print("Opcion no valida")
+    #     return
     
     print("Que tipo de pieza es?\n"
           "1. Macho\n"
@@ -66,8 +69,8 @@ def main():
     print("\nInformación del producto seleccionado:")
     cantidad_actual = read.mostrar_producto(nombre, tipo)
     
-    if cantidad_actual is None:
-        print("Error: Producto no encontrado")
+    if cantidad_actual == 0:
+        print("Error: Producto no encontrado o sin stock")
         return
         
     cantidad_nueva = int(input("\nIngrese la cantidad a agregar: "))
@@ -80,6 +83,10 @@ def main():
     
         if actualizar_producto(nombre, tipo, cantidad_nueva):
             print(f"\nProducto actualizado exitosamente!")
+
+            if cantidad_actual is None:
+                cantidad_actual = 0
+
             print(f"Nueva cantidad total: {cantidad_actual + cantidad_nueva}")
         else:
             print("Error: Producto no encontrado")

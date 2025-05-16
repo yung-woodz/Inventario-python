@@ -15,26 +15,14 @@ class Maderitas:
 
 def main():
 
-    op1 = int()
+
+    nombre = str()
     op2 = int()
     cantidad = int()
 
-    while not (1 <= op1 <= 3):
-
-        os.system('clear')
-        print("Que deseas agregar?\n"
-            "1. Peon\n"
-            "2. Calabera\n"
-            "3. Lomo Toro\n")
-        
-        op1 = int(input("Opcion: "))
-    
-    if op1 == 1:
-        nombre = "Peon"
-    elif op1 == 2:
-        nombre = "Calabera"
-    elif op1 == 3:
-        nombre = "Lomo Toro"
+    os.system('clear')
+    print("Ingresa el nombre del producto: ")
+    nombre = str(input("Nombre: ").strip())
 
     while not (1 <= op2 <= 2):
 
