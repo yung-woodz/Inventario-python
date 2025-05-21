@@ -30,7 +30,7 @@ botonEliminar = Button(ventana,text='Eliminar',\
 botonActualizar.grid(row=1,column=0,padx=5,pady=5)
 botonAgregar.grid(row=1,column=1,padx=5,pady=5)
 botonEliminar.grid(row=1,column=2,padx=5,pady=5)
-on_off_main(False)
+on_off_main(True) #DEBUG MODE
 
 ##---------------Inicio------------##
 new_register_win = Toplevel(ventana)
@@ -124,25 +124,21 @@ def extra_gui(fun):
 
     
     var = StringVar(value='None')
-    var_2=StringVar(value='None')
 
     #Tipo de pieza
-    texto=Label(extra_win,text='Escoge el tipo de pieza')
+    texto=Label(extra_win,text='Escribe el nombre de la pieza. \n\
+                ¡Ojo! El programa es sensible a mayúsculas y signos de puntuación.')
     texto.pack(anchor='center')
 
-    peon_button = Radiobutton(extra_win,text='Peón',variable=var,value='Peon').\
-        pack(anchor='center')
-    calabera_button = Radiobutton(extra_win,text='Calabera',variable=var,value='Calabera').\
-        pack(anchor='center')
-    lomo_button = Radiobutton(extra_win,text='Lomo Toro',variable=var,value='Lomo Toro').\
-        pack(anchor='center')
+    nombre_boton = Entry(extra_win)
+    nombre_boton.pack(anchor='center')
     #Macho Hembra
     texto_2=Label(extra_win,text='Escoge si es macho o hembra')
     texto_2.pack(anchor='center')
 
-    macho_button = Radiobutton(extra_win,text='Macho',variable=var_2,value='Macho').\
+    macho_button = Radiobutton(extra_win,text='Macho',variable=var,value='Macho').\
         pack(anchor='center')
-    hembra_button = Radiobutton(extra_win,text='Hembra',variable=var_2,value='Hembra').\
+    hembra_button = Radiobutton(extra_win,text='Hembra',variable=var,value='Hembra').\
         pack(anchor='center')
     
     #Cantidad
@@ -153,25 +149,28 @@ def extra_gui(fun):
     cantidad.pack(anchor='center')
     #Confirmación
     match fun:
-        case 0:
+        case 0: #agregar
             confirmar = Button(extra_win,text='Confirmar',\
-                width=8,height=1,command=lambda:[create_piece(var.get(),var_2.get(),cantidad.get()),extra_win.destroy()]).pack(side='left')
+                width=8,height=1,command=lambda:[create_piece(nombre_boton.get(),var.get(),cantidad.get()),extra_win.destroy()]).pack(side='left')
             cancelar = Button(extra_win,text='Cancelar',\
                 width=8,height=1,command=lambda:[on_off_main(True),extra_win.destroy()]).pack(side='right')
         case 1:
             confirmar = Button(extra_win,text='Confirmar',\
-                width=8,height=1,command=lambda:[create_piece(var.get(),var_2.get(),cantidad.get()),extra_win.destroy()]).pack(side='left')
+                width=8,height=1,command=lambda:[create_piece(var.get(),var.get(),cantidad.get()),extra_win.destroy()]).pack(side='left')
             cancelar = Button(extra_win,text='Cancelar',\
                 width=8,height=1,command=lambda:[on_off_main(True),extra_win.destroy()]).pack(side='right')
         case 2:
             confirmar = Button(extra_win,text='Confirmar',\
-                width=8,height=1,command=lambda:[del_piece(var.get(),var_2.get(),cantidad.get()),extra_win.destroy()]).pack(side='left')
+                width=8,height=1,command=lambda:[del_piece(var.get(),var.get(),cantidad.get()),extra_win.destroy()]).pack(side='left')
             cancelar = Button(extra_win,text='Cancelar',\
                 width=8,height=1,command=lambda:[on_off_main(True),extra_win.destroy()]).pack(side='right')
             
 def create_piece(nombre,tipo,cantidad): 
-    if cantidad =='':
+    if cantidad =='' or nombre=='':
         messagebox.showerror(message='Faltan datos')
+        return None
+    if nombre in productos:
+        messagebox.showerror(message='Pieza ya existe!')
         return None
     cantidad = int(cantidad)
     if cantidad <= 0:
@@ -195,6 +194,7 @@ def table_update():
     if not os.path.exists(ruta_archivo):
         print(f"Error: El archivo {ruta_archivo} no existe")
 
+    global productos
     productos = {}
 
     try:
@@ -231,11 +231,12 @@ def table_update():
             columns_table[1].append(tipo)
             columns_table[2].append(cantidad)
 
-    for i in range(0,6):
+    for i in range(0,len(productos.items())*2):
         for j in range(0,3):
             e = Entry(ventana, width=10, font=('Arial', 16, 'bold'))
             e.grid(row=i+2, column=j)
             e.insert(END,columns_table[j][i])
+            e.configure(state=DISABLED)
 
 table_update()
 
