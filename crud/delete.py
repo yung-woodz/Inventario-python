@@ -61,22 +61,25 @@ class Maderitas:
             return False
 
 def main():
-    print("Que producto deseas eliminar?\n"
-          "1. Peon\n"
-          "2. Calabera\n"
-          "3. Lomo Toro\n")
+    # print("Que producto deseas eliminar?\n"
+    #       "1. Peon\n"
+    #       "2. Calabera\n"
+    #       "3. Lomo Toro\n")
     
-    op1 = int(input("Opcion: "))
+    # op1 = int(input("Opcion: "))
+
+    print("Que producto desea eliminar?\n")
+    nombre = str(input("Nombre: ").strip())
     
-    if op1 == 1:
-        nombre = "Peon" 
-    elif op1 == 2: 
-        nombre = "Calabera"
-    elif op1 == 3: 
-        nombre = "Lomo Toro"
-    else:
-        print("Opcion no valida")
-        return
+    # if op1 == 1:
+    #     nombre = "Peon" 
+    # elif op1 == 2: 
+    #     nombre = "Calabera"
+    # elif op1 == 3: 
+    #     nombre = "Lomo Toro"
+    # else:
+    #     print("Opcion no valida")
+    #     return
     
     print("Que tipo de pieza es?\n"
           "1. Macho\n"

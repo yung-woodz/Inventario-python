@@ -15,7 +15,6 @@ class Maderitas:
 
 def main():
 
-
     nombre = str()
     op2 = int()
     cantidad = int()

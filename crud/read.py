@@ -63,7 +63,6 @@ def mostrar_producto(nombre_buscar=None, tipo_buscar=None):
             print(f"No se encontró el producto '{nombre_buscar}'")
             return 0
     else:
-        print("\nListado completo de productos:")
         for nombre, tipos in productos.items():
             print(f"\n{nombre}:")
             for tipo, cantidad in tipos.items():
