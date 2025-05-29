@@ -1,9 +1,9 @@
-Peon Macho 14
-Peon Hembra 5
-Lomo Toro Hembra 3
-Calabera Hembra 1
-Calabera Macho 3
-Lomo Toro Macho 4
-Power Ranger Macho 3
-Power Ranger Hembra 7
-Toro Guacho Macho 6
+Peon Macho 34 14
+Peon Hembra 5 5
+Lomo Toro Hembra 55 3
+Calabera Hembra 23 1
+Calabera Macho 34 3
+Lomo Toro Macho 14 4
+Power Ranger Macho 14 3
+Power Ranger Hembra 14 7
+Toro Guacho Macho 6 4

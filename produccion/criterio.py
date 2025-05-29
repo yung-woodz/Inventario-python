@@ -16,12 +16,9 @@ def procesar_linea(partes):
     return nombre, tipo, cantidad
 
 def cargar_y_mostrar_productos(orden='FIFO'):
-    """
-    Carga y muestra productos del archivo Maderitas.txt.
-    Permite elegir el orden de visualización: FIFO (primero en entrar) o LIFO (último en entrar).
-    """
+    
     productos = {}
-    # Obtener ruta absoluta al archivo en carpeta "crud"
+    
     ruta_archivo = os.path.join(os.path.dirname(__file__), '..', 'crud', 'Maderitas.txt')
     ruta_archivo = os.path.abspath(ruta_archivo)
 
