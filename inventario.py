@@ -7,7 +7,7 @@ def menu():
     op = int()
     
     while not (1 <= op <= 4):
-        os.system('clear')
+        os.system('cls')
         print("Bienvendido al Sistema!!")
         print("\tElige una opcion\n")
         print("1. Agregar\n"

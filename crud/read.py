@@ -6,14 +6,15 @@ def procesar_linea(partes):
     Los últimos 2 elementos son tipo y cantidad
     Todo lo demás forma parte del nombre
     """
-    if len(partes) < 3:
+    if len(partes) < 4:
         return None, None, None
         
     cantidad = int(partes[-1])
-    tipo = partes[-2]
-    nombre = " ".join(partes[:-2])
+    tiempo = int(partes[-2])
+    tipo = partes[-3]
+    nombre = " ".join(partes[:-3])
     
-    return nombre, tipo, cantidad
+    return nombre, tipo, tiempo, cantidad
 
 def cargar_productos():
     """
@@ -30,7 +31,7 @@ def cargar_productos():
     with open(ruta_archivo, 'r') as fichero:
         for numero_linea, linea in enumerate(fichero, 1):
             partes = linea.strip().split()
-            nombre, tipo, cantidad = procesar_linea(partes)
+            nombre, tipo, tiempo, cantidad = procesar_linea(partes)
 
             if not nombre or tipo not in ["Macho", "Hembra"]:
                 print(f"Línea {numero_linea} inválida: '{linea.strip()}'")
@@ -39,7 +40,10 @@ def cargar_productos():
             if nombre not in productos:
                 productos[nombre] = {}
 
-            productos[nombre][tipo] = productos[nombre].get(tipo, 0) + cantidad
+            productos[nombre][tipo] = {
+                "cantidad": cantidad,
+                "tiempo": tiempo
+            }
 
     return productos
 
@@ -48,25 +52,27 @@ def mostrar_producto(nombre_buscar=None, tipo_buscar=None):
 
     if not productos:
         print("No hay productos para mostrar.")
-        return 0
+        return
 
     if nombre_buscar:
         if nombre_buscar in productos:
             print(f"\n{nombre_buscar}:")
             if tipo_buscar:
-                cantidad = productos[nombre_buscar].get(tipo_buscar, 0)
-                print(f"\t{tipo_buscar}: {cantidad} unidades")
+                data = productos[nombre_buscar].get(tipo_buscar)
+                if data:
+                    print(f"\t{tipo_buscar}: {data['cantidad']} unidades ({data['tiempo']} min)")
+                else:
+                    print(f"\t{tipo_buscar}: no disponible")
             else:
-                for tipo, cantidad in productos[nombre_buscar].items():
-                    print(f"\t{tipo}: {cantidad} unidades")
+                for tipo, data in productos[nombre_buscar].items():
+                    print(f"\t{tipo}: {data['cantidad']} unidades ({data['tiempo']} min)")
         else:
             print(f"No se encontró el producto '{nombre_buscar}'")
-            return 0
     else:
         for nombre, tipos in productos.items():
             print(f"\n{nombre}:")
-            for tipo, cantidad in tipos.items():
-                print(f"\t{tipo}: {cantidad} unidades")
+            for tipo, data in tipos.items():
+                print(f"\t{tipo}: {data['cantidad']} unidades ({data['tiempo']} min)")
 
 def main():
     print("\tListado de productos")
