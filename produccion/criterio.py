@@ -6,14 +6,15 @@ def procesar_linea(partes):
     Los últimos 2 elementos son tipo y cantidad
     Todo lo demás forma parte del nombre
     """
-    if len(partes) < 3:
+    if len(partes) < 4:
         return None, None, None
         
     cantidad = int(partes[-1])
-    tipo = partes[-2]
-    nombre = " ".join(partes[:-2])
+    tiempo = int(partes[-2])
+    tipo = partes[-3]
+    nombre = " ".join(partes[:-3])
     
-    return nombre, tipo, cantidad
+    return nombre, tipo, tiempo, cantidad
 
 def cargar_y_mostrar_productos(orden='FIFO'):
     
@@ -36,7 +37,7 @@ def cargar_y_mostrar_productos(orden='FIFO'):
 
     for numero_linea, linea in enumerate(lineas, 1):
         partes = linea.strip().split()
-        nombre, tipo, cantidad = procesar_linea(partes)
+        nombre, tipo, tiempo, cantidad = procesar_linea(partes)
 
         if not nombre or tipo not in ["Macho", "Hembra"]:
             print(f"Línea {numero_linea} inválida: '{linea.strip()}'")
@@ -45,7 +46,10 @@ def cargar_y_mostrar_productos(orden='FIFO'):
         if nombre not in productos:
             productos[nombre] = {}
 
-        productos[nombre][tipo] = productos[nombre].get(tipo, 0) + cantidad
+        productos[nombre][tipo] = {
+            "cantidad": cantidad,
+            "tiempo": tiempo
+        }
 
     if not productos:
         print("No hay productos para mostrar.")
@@ -53,8 +57,8 @@ def cargar_y_mostrar_productos(orden='FIFO'):
 
     for nombre, tipos in productos.items():
         print(f"\n{nombre}:")
-        for tipo, cantidad in tipos.items():
-            print(f"\t{tipo}: {cantidad} unidades")
+        for tipo, data in tipos.items():
+            print(f"\t{tipo}: {data['cantidad']} unidades ({data['tiempo']} min)")
 
 
 def main():

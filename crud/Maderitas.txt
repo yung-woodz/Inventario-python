@@ -6,4 +6,4 @@ Calabera Macho 34 3
 Lomo Toro Macho 14 4
 Power Ranger Macho 14 3
 Power Ranger Hembra 14 7
-Toro Guacho Macho 6 4
+Toro Guacho Macho 6 6
