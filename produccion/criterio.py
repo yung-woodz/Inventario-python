@@ -61,7 +61,7 @@ def cargar_y_mostrar_productos(orden='FIFO'):
             print(f"\t{tipo}: {data['cantidad']} unidades ({data['tiempo']} min)")
 
 
-def main():
+""" def main():
 
     opcion = input("Seleccione el orden (FIFO/LIFO): ").strip().upper()
     cargar_y_mostrar_productos(orden=opcion if opcion in ["FIFO", "LIFO"] else 'FIFO')
@@ -69,4 +69,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    main() """
